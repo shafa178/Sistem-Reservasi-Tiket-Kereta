@@ -324,4 +324,158 @@ void cari()
 	}
 }
 
+void edit()
+{
+    if (head == NULL) 
+    { 
+		cout << "Data tiket kosong!\n"; 
+		return; 
+	}
+	
+	bool keluar = false;
+	while(!keluar) 
+	{
+		tampil();
+		cout << "\nPilih nomor data yang ingin diedit : ";
+		int index; 
+		cin >> index;
 
+		Node* temp = head; 
+		int i=1;
+		
+		while(temp!=NULL && i<index)
+		{ 
+			temp=temp->next; 
+			i++; 
+		}
+		if(temp==NULL)
+		{
+			cout << "Data tidak ditemukan!\n"; 
+			return; 
+		}
+
+		cin.ignore(); 
+		string input;
+		
+		cout << "Nama Baru [" << temp->nama << "] : "; 
+		getline(cin,input); 
+		if(!input.empty()) 
+			temp->nama=input;
+			
+		cout << "Asal Baru [" << temp->asal << "] : "; 
+		getline(cin,input); 
+		if(!input.empty()) 
+			temp->asal=input;
+			
+		cout << "Tujuan Baru [" << temp->tujuan << "] : "; 
+		getline(cin,input); 
+		if(!input.empty()) 
+			temp->tujuan=input;
+			
+		cout << "Tanggal Baru [" << temp->tanggal << "] : "; 
+		getline(cin,input);
+		if(!input.empty())
+		{ 
+			if(validasiTanggal(input)) 
+				temp->tanggal=input; 
+			else 
+				cout<<"Format salah, tidak diubah\n";
+		}
+		
+		cout << "Kursi Baru [" << temp->kursi << "] : "; 
+		getline(cin,input); 
+		if(!input.empty()) 
+			temp->kursi=input;
+
+		cout<<"\nJenis Kereta [" << temp->jenis << "]\n1. Ekonomi\n2. Bisnis\n3. Eksekutif\nPilih Jenis Baru [0 = tidak diubah] : ";
+		int pil; 
+		cin >> pil; 
+		cin.ignore();
+		
+		if(pil==1) 
+			temp->jenis="Ekonomi"; 
+		else if(pil==2) 
+			temp->jenis="Bisnis"; 
+		else if(pil==3) 
+			temp->jenis="Eksekutif";
+			
+		temp->harga=hitungHarga(temp->jenis);
+
+		cout << "\nData berhasil diubah!\n";
+		simpanFile();
+
+		if(kembaliMenu())
+			keluar = true;
+		else
+			system("cls"); 
+	}
+}
+
+void hapus()
+{
+    if(head==NULL)
+    { 
+		cout<<"Data tiket kosong!\n"; 
+		return; 
+	}
+	
+	bool keluar = false;
+    while(!keluar)
+    {
+		tampil();
+		
+		cout << "\nPilih nomor tiket yang ingin dibatalkan : "; 
+		int index; 
+		cin >> index;
+
+		Node* temp=head; 
+		int i=1;
+		
+		while(temp!=NULL && i<index)
+		{ 
+			temp=temp->next; 
+			i++; 
+		}
+		if(temp==NULL)
+		{ 
+			cout << "Data tidak ditemukan!\n"; 
+			return; 
+		}
+
+		cout << "\nYakin ingin menghapus tiket? (y/n) : "; 
+		char konfirm; 
+		cin >> konfirm;
+		
+		if(konfirm=='y'||konfirm=='Y')
+		{
+			if(temp==head && temp==tail) 
+				head=tail=NULL;
+			else if(temp==head)
+			{ 
+				head=head->next; 
+				head->prev=NULL; 
+			}
+			else if(temp==tail)
+			{ 
+				tail=tail->prev; 
+				tail->next=NULL; 
+			}
+			else 
+			{ 
+				temp->prev->next=temp->next; 
+				temp->next->prev=temp->prev; 
+			}
+			
+			delete temp; 
+			cout << "Tiket berhasil dibatalkan!\n";
+			
+			simpanFile();
+		}
+		else cout << "Pembatalan dibatalkan.\n";
+
+		if(kembaliMenu())
+			keluar = true;
+		else
+			system("cls"); 
+	}
+}
