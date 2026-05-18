@@ -151,3 +151,94 @@ void bacaFile()
     }
     file.close();
 }
+
+bool kembaliMenu()
+{
+    char pilih;
+    do 
+    {
+        cout << "\nKembali ke menu utama? (y/n) : ";
+        cin >> pilih;
+        pilih = tolower(pilih);
+    } while (pilih != 'y' && pilih != 'n');
+    
+    return (pilih == 'y');
+}
+
+void tambah()
+{
+    Node* baru = new Node;
+    garis('=');
+    cout << "           PESAN TIKET BARU\n";
+    garis('=');
+
+    cin.ignore();
+    cout << "Nama Penumpang : "; 
+    getline(cin, baru->nama);
+    
+    if (baru->nama.empty()) 
+    { 
+		cout << "Nama tidak boleh kosong!\n"; 
+		delete baru; 
+		return; 
+	}
+
+    cout << "Stasiun Asal   : "; 
+    getline(cin, baru->asal);
+    cout << "Stasiun Tujuan : "; 
+    getline(cin, baru->tujuan);
+    cout << "Tanggal (dd-mm-yyyy) : "; 
+    getline(cin, baru->tanggal);
+    if (!validasiTanggal(baru->tanggal)) 
+    { 
+		cout << "Format tanggal salah!\n"; 
+		delete baru; 
+		return; 
+	}
+
+    cout << "\nJenis Kereta\n1. Ekonomi   - Rp 150000\n2. Bisnis    - Rp 350000\n3. Eksekutif - Rp 600000\nPilih [1-3] : ";
+    int pil; 
+    cin >> pil; 
+    cin.ignore();
+    if (pil == 1) 
+		baru->jenis = "Ekonomi";
+    else if (pil == 2) 
+		baru->jenis = "Bisnis";
+    else if (pil == 3) 
+		baru->jenis = "Eksekutif";
+    else 
+    { 
+		cout << "Pilihan tidak valid!\n"; 
+		delete baru; 
+		return; 
+	}
+
+    cout << "Nomor Kursi : "; 
+    getline(cin, baru->kursi);
+
+    baru->harga = hitungHarga(baru->jenis);
+    baru->kodeBooking = generateKode();
+    baru->next = NULL; 
+    baru->prev = NULL;
+    
+    if (head == NULL) 
+		head = tail = baru;
+    else 
+    { 
+		tail->next = baru; 
+		baru->prev = tail; 
+		tail = baru; 
+	}
+
+    garis('-');
+    cout << "Tiket berhasil dipesan!\nKode Booking : " << baru->kodeBooking << "\nTotal Harga : Rp " << fixed << setprecision(0) << baru->harga << endl;
+    garis('-');
+
+    simpanFile();
+    if (!kembaliMenu()) 
+    { 
+		system("cls"); 
+		tambah(); 
+	}
+}
+
