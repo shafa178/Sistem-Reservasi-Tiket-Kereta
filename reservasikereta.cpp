@@ -242,3 +242,86 @@ void tambah()
 	}
 }
 
+void tampil()
+{
+    if (head == NULL) 
+    { 
+		cout << "Belum ada data tiket.\n"; 
+		return; 
+	}
+    Node* temp = head; 
+    int no=1;
+    
+    while (temp != NULL)
+    {
+        cout << "\nNo. " << no++ << endl; 
+        garis('-');
+        cout << setw(18) << left << "Kode Booking" << ": " << temp->kodeBooking << endl;
+        cout << setw(18) << "Nama" << ": " << temp->nama << endl;
+        cout << setw(18) << "Asal" << ": " << temp->asal << endl;
+        cout << setw(18) << "Tujuan" << ": " << temp->tujuan << endl;
+        cout << setw(18) << "Tanggal" << ": " << temp->tanggal << endl;
+        cout << setw(18) << "Jenis" << ": " << temp->jenis << endl;
+        cout << setw(18) << "Nomor Kursi" << ": " << temp->kursi << endl;
+        cout << setw(18) << "Harga" << ": Rp " << fixed << setprecision(0) << temp->harga << endl;
+        garis('-');
+        temp = temp->next;
+    }
+}
+
+void cari()
+{
+    if (head == NULL) 
+    { 
+		cout << "Data tiket kosong!\n"; 
+		return; 
+	}
+
+    garis('=');
+    cout << "              CARI TIKET\n";
+    garis('=');
+
+    cout << "Cari berdasarkan:\n1. Nama Penumpang\n2. Kode Booking\nPilih : ";
+    int pil; 
+    cin >> pil; 
+    cin.ignore();
+
+    string kunci;
+    if (pil == 1) 
+		cout << "Masukkan Nama : ";
+    else 
+		cout << "Masukkan Kode Booking : ";
+    getline(cin, kunci);
+
+    Node* temp = head;
+    bool ditemukan=false;
+
+    while(temp!=NULL)
+    {
+        bool cocok = (pil==1) ? (toLowerCase(temp->nama)==toLowerCase(kunci)) : (temp->kodeBooking==kunci);
+        if(cocok)
+        {
+            ditemukan=true;
+            garis('-');
+            cout<<"Kode Booking : " << temp->kodeBooking << endl;
+            cout<<"Nama         : " << temp->nama << endl;
+            cout<<"Asal         : " << temp->asal << endl;
+            cout<<"Tujuan       : " << temp->tujuan << endl;
+            cout<<"Tanggal      : " << temp->tanggal << endl;
+            cout<<"Jenis        : " << temp->jenis << endl;
+            cout<<"Kursi        : " << temp->kursi << endl;
+            cout<<"Harga        : Rp " << fixed << setprecision(0) << temp->harga << endl;
+            garis('-');
+        }
+        temp=temp->next;
+    }
+    if(!ditemukan) 
+		cout << "Data tidak ditemukan!\n";
+    if(!kembaliMenu()) 
+    { 
+		system("cls"); 
+		cari(); 
+	}
+}
+
+
