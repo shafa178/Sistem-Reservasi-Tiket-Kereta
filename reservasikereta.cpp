@@ -67,3 +67,87 @@ bool validasiTanggal(string tgl)
 		return false;
     return true;
 }
+
+bool login()
+{
+    string user, pass;
+    int attempt = 0;
+    garis('=');
+    cout << " SISTEM MANAJEMEN RESERVASI TIKET KERETA API\n";
+    cout << "              LOGIN ADMIN\n";
+    garis('=');
+    while (attempt < 3)
+    {
+        cout << "\nPercobaan Login ke-" << attempt + 1 << "/3\n";
+        cout << "Username : "; 
+        cin >> user;
+        cout << "Password : "; 
+        cin >> pass;
+        if (user == "admin" && pass == "kai124")
+        {
+            cout << "\nLogin berhasil!\nSelamat datang Admin Reservasi.\n";
+            return true;
+        }
+        else 
+        { 
+			cout << "Username atau password salah!\n"; 
+			attempt++; 
+		}
+    }
+    cout << "\nAkun dikunci karena gagal login 3 kali.\n";
+    return false;
+}
+
+void simpanFile()
+{
+    ofstream file("data_tiket.txt");
+    Node* temp = head;
+    while (temp != NULL)
+    {
+        file << temp->kodeBooking << "|" << temp->nama << "|" << temp->asal << "|"
+             << temp->tujuan << "|" << temp->tanggal << "|" << temp->jenis << "|"
+             << temp->kursi << "|" << temp->harga << endl;
+        temp = temp->next;
+    }
+    file.close();
+}
+
+void bacaFile()
+{
+    ifstream file("data_tiket.txt");
+    if (!file.is_open()) return;
+    while (!file.eof())
+    {
+        Node* baru = new Node;
+        getline(file, baru->kodeBooking, '|');
+        getline(file, baru->nama, '|');
+        getline(file, baru->asal, '|');
+        getline(file, baru->tujuan, '|');
+        getline(file, baru->tanggal, '|');
+        getline(file, baru->jenis, '|');
+        getline(file, baru->kursi, '|');
+        string hargaStr; 
+        getline(file, hargaStr);
+        
+        if (baru->kodeBooking.empty()) 
+        { 
+			delete baru; 
+			break; 
+		}
+        
+        baru->harga = stod(hargaStr);
+        baru->next = NULL; 
+        baru->prev = NULL;
+        
+        if (head == NULL) 
+			head = tail = baru;
+        else 
+        { 
+			tail->next = baru; 
+			baru->prev = tail; 
+			tail = baru; 
+		}
+        totalTiket++;
+    }
+    file.close();
+}
