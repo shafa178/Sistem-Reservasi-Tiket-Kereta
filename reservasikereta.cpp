@@ -479,3 +479,196 @@ void hapus()
 			system("cls"); 
 	}
 }
+
+void sorting()
+{
+    if(head==NULL)
+    { 
+		cout<<"Data kosong!\n"; 
+		return; 
+	}
+
+    do{
+        system("cls"); 
+        garis('='); 
+        cout<<"            SORTING TIKET\n"; 
+        garis('=');
+        cout << "1. Nama Penumpang (A-Z)\n2. Harga Tiket (Termahal ke Termurah)\nPilih : ";
+        int pil; 
+        cin >> pil;
+
+        bool tukar; 
+        Node* ptr;
+        
+        do 
+        {
+            tukar=false; 
+            ptr=head;
+            
+            while(ptr->next!=NULL)
+            {
+                bool kondisi=false;
+                if(pil==1 && ptr->nama>ptr->next->nama) 
+					kondisi=true;
+                else if(pil==2 && ptr->harga<ptr->next->harga) 
+					kondisi=true;
+                else if(pil!=1 && pil!=2)
+                { 
+					cout << "Pilihan tidak valid!\n"; 
+					return; 
+				}
+
+                if(kondisi)
+                {
+                    swap(ptr->kodeBooking, ptr->next->kodeBooking);
+                    swap(ptr->nama, ptr->next->nama);
+                    swap(ptr->asal, ptr->next->asal);
+                    swap(ptr->tujuan, ptr->next->tujuan);
+                    swap(ptr->tanggal, ptr->next->tanggal);
+                    swap(ptr->jenis, ptr->next->jenis);
+                    swap(ptr->kursi, ptr->next->kursi);
+                    swap(ptr->harga, ptr->next->harga);
+                    tukar=true;
+                }
+                ptr=ptr->next;
+            }
+        } while(tukar);
+
+        cout << "\nData berhasil diurutkan!\n";
+
+        Node* temp=head; 
+        int no=1;
+        
+        while(temp!=NULL)
+        {
+            cout << "\nNo. " << no++<<endl; 
+            garis('-');
+            cout << setw(18) << left << "Kode Booking" << ": " << temp->kodeBooking << endl;
+            cout << setw(18) << "Nama" << ": " << temp->nama << endl;
+            cout << setw(18) << "Asal" << ": " << temp->asal << endl;
+            cout <<setw(18) << "Tujuan" << ": " << temp->tujuan << endl;
+            cout << setw(18) << "Tanggal" << ": " << temp->tanggal << endl;
+            cout << setw(18) << "Jenis" << ": " << temp->jenis << endl;
+            cout << setw(18) << "Nomor Kursi" << ": " << temp->kursi << endl;
+            cout << setw(18) << "Harga" << ": Rp " << fixed << setprecision(0) << temp->harga << endl;
+            garis('-');
+            
+            temp=temp->next;
+        }
+        simpanFile();
+        
+        if(!kembaliMenu())
+        { 
+			system("cls"); 
+			continue; 
+		}
+        else break;
+    } while(true);
+}
+
+void statistik()
+{
+    if(head==NULL)
+    { 
+		cout<<"Belum ada data tiket.\n"; 
+		return; 
+	}
+
+    int ekonomi=0, bisnis=0, eksekutif=0;
+    double total=0;
+    Node* temp=head;
+
+    while(temp!=NULL)
+    {
+        if(temp->jenis=="Ekonomi") 
+			ekonomi++;
+        else if(temp->jenis=="Bisnis") 
+			bisnis++;
+        else if(temp->jenis=="Eksekutif") 
+			eksekutif++;
+        total+=temp->harga;
+        temp=temp->next;
+    }
+
+    garis('='); 
+    cout << "           STATISTIK TIKET\n"; 
+    garis('=');
+    cout << setw(20) << left << "Total Tiket" << ": " << ekonomi + bisnis + eksekutif << " tiket\n";
+    cout << setw(20) << "Kelas Ekonomi" << ": " << ekonomi << " tiket\n";
+    cout << setw(20) << "Kelas Bisnis" << ": " << bisnis << " tiket\n";
+    cout << setw(20) << "Kelas Eksekutif" << ": " << eksekutif << " tiket\n";
+    garis('-');
+    cout << setw(20) << "Total Pendapatan" << ": Rp " << fixed << setprecision(0) << total << endl;
+    garis('=');
+
+    if(!kembaliMenu())
+    { 
+		system("cls"); 
+		statistik(); 
+	}
+}
+
+int main()
+{
+    if(!login()) 
+        return 0;
+    bacaFile();
+    int pilih;
+    
+    do
+    {
+        system("cls");
+        garis('='); 
+        cout << " SISTEM MANAJEMEN RESERVASI TIKET KERETA API\n"; 
+        garis('=');
+        cout << "1. Pesan Tiket\n2. Lihat Daftar Tiket\n3. Cari Tiket\n4. Edit Data Tiket\n5. Batalkan Tiket\n6. Urutkan Tiket\n7. Statistik Tiket\n0. Keluar\n";
+        garis('-'); 
+        cout << "Pilih Menu : "; 
+        cin >> pilih; 
+        cout << endl;
+
+        switch(pilih)
+        {
+            case 1: 
+				system("cls"); 
+				tambah(); 
+				break;
+            case 2: 
+				system("cls"); 
+				tampil(); 
+				break;
+            case 3: 
+				system("cls"); 
+				cari(); 
+				break;
+            case 4: 
+				system("cls"); 
+				edit(); 
+				break;
+            case 5: 
+				system("cls"); 
+				hapus(); 
+				break;
+            case 6: 
+				system("cls"); 
+				sorting(); 
+				break;
+            case 7: 
+				system("cls"); 
+				statistik(); 
+				break;
+            case 0: 
+				system("cls"); 
+				cout << "Terima kasih telah menggunakan sistem.\n"; 
+				break;
+            default: 
+				system("cls"); 
+				cout << "Menu tidak valid!\n";
+        }
+        
+        system("pause");
+        
+    } while(pilih != 0);
+
+    return 0;
+}
