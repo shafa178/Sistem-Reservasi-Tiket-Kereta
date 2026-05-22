@@ -231,7 +231,7 @@ void tambah()
 	}
 
     garis('-');
-    cout << "Tiket berhasil dipesan!\nKode Booking : " << baru->kodeBooking << "\nTotal Harga : Rp " << fixed << setprecision(0) << baru->harga << endl;
+    cout << "Tiket berhasil dipesan!\nKode Booking : " << baru->kodeBooking << "\nTotal Harga  : Rp " << fixed << setprecision(0) << baru->harga << endl;
     garis('-');
 
     simpanFile();
@@ -694,7 +694,7 @@ int main()
 				break;
             case 0: 
 				system("cls"); 
-				cout << "Terima kasih telah menggunakan sistem.\n"; 
+				cout << "Terima kasih telah menggunakan sistem reservasi kereta!\n"; 
 				break;
             default: 
 				system("cls"); 
