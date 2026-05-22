@@ -242,6 +242,37 @@ void tambah()
 	}
 }
 
+void cetakGarisTabel()
+{
+    cout << "+" << string(4,'-')  << "+"
+         << string(8,'-')  << "+"
+         << string(17,'-') << "+"
+         << string(12,'-') << "+"
+         << string(12,'-') << "+"
+         << string(12,'-') << "+"
+         << string(11,'-') << "+"
+         << string(7,'-')  << "+"
+         << string(13,'-') << "+"
+         << endl;
+}
+
+void cetakHeaderTabel()
+{
+    cetakGarisTabel();
+    cout << left
+         << "| " << setw(3)  << "No"
+         << "| " << setw(7)  << "Kode"
+         << "| " << setw(16) << "Nama"
+         << "| " << setw(11) << "Asal"
+         << "| " << setw(11) << "Tujuan"
+         << "| " << setw(11) << "Tanggal"
+         << "| " << setw(10) << "Jenis"
+         << "| " << setw(6)  << "Kursi"
+         << "| " << setw(12) << "Harga"
+         << "|" << endl;
+    cetakGarisTabel();
+}
+
 void tampil()
 {
     if (head == NULL) 
@@ -249,22 +280,26 @@ void tampil()
 		cout << "Belum ada data tiket.\n"; 
 		return; 
 	}
+
+	cetakHeaderTabel();
+	
     Node* temp = head; 
     int no=1;
     
     while (temp != NULL)
     {
-        cout << "\nNo. " << no++ << endl; 
-        garis('-');
-        cout << setw(18) << left << "Kode Booking" << ": " << temp->kodeBooking << endl;
-        cout << setw(18) << "Nama" << ": " << temp->nama << endl;
-        cout << setw(18) << "Asal" << ": " << temp->asal << endl;
-        cout << setw(18) << "Tujuan" << ": " << temp->tujuan << endl;
-        cout << setw(18) << "Tanggal" << ": " << temp->tanggal << endl;
-        cout << setw(18) << "Jenis" << ": " << temp->jenis << endl;
-        cout << setw(18) << "Nomor Kursi" << ": " << temp->kursi << endl;
-        cout << setw(18) << "Harga" << ": Rp " << fixed << setprecision(0) << temp->harga << endl;
-        garis('-');
+        cout << left
+             << "| " << setw(3)  << no++
+             << "| " << setw(7)  << temp->kodeBooking
+             << "| " << setw(16) << temp->nama
+             << "| " << setw(11) << temp->asal
+             << "| " << setw(11) << temp->tujuan
+             << "| " << setw(11) << temp->tanggal
+             << "| " << setw(10) << temp->jenis
+             << "| " << setw(6)  << temp->kursi
+             << "| Rp " << setw(9) << fixed << setprecision(0) << temp->harga
+             << "|" << endl;
+        cetakGarisTabel();
         temp = temp->next;
     }
 }
